@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sancaran</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="logo"><img src="imgs/logo.png" alt="Logo Sancaran">Sancaran</div>
+    <nav>
+      <ul>
+        <li><a href="#">O que é o app <span></span></a></li>
+        <li><a href="#">Quem somos nós <span></span></a></li>
+        <li><a href="#">Nossos planos <span></span></a></li>
+      </ul>
+    </nav>
+    <div class="header-buttons">
+      <div class="dropdown">
+        <button class="dropdown-toggle">Entrar</button>
+        <div class="dropdown-menu">
+          <a href="LoginRestrito.jsp">Área Restrita</a>
+          <a href="entrarConta.jsp">Conta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-text">
+      <h1>Transforma metas em resultados</h1>
+      <p>
+        Defina metas claras, acompanhe o progresso com gráficos fáceis de entender e receba sugestões de ações para acelerar seus resultados
+      </p>
+      <!-- CORREÇÃO AQUI: Botão substituído por link -->
+      <a href="Criarconta.jsp" class="btn-primary">Crie sua conta</a>
+    </div>
+    <div class="hero-image">
+      <img src="imgs/metasEmResultados.png" alt="Imagem do app Sancaran" />
+    </div>
+  </div>
+</section>
+
+<section class="about-app container">
+  <div class="about-content">
+    <div class="about-text">
+      <h2>O que é o app</h2>
+      <p>
+        O aplicativo será usado pelos gestores ou supervisores da fábrica para cadastrar diariamente as metas de produção e os resultados alcançados. A partir dessas informações, os funcionários da linha de produção poderão acompanhar, pelo celular, se a meta foi batida ou não, visualizar gráficos e estatísticas do desempenho do setor e ler comentários explicativos da liderança, criando um ambiente mais transparente, motivador e organizado.
+      </p>
+    </div>
+    <div class="about-image">
+      <img src="imgs/OqueEhOApp.png" alt="Imagem explicativa do app" />
+    </div>
+  </div>
+</section>
+
+<section class="about-team">
+  <div class="container about-team-content">
+    <img src="imgs/quemSomos.png" alt="Equipe Sancaran" class="team-photo" />
+    <div class="team-text">
+      <h2>Quem somos nós</h2>
+      <p>
+        Nós acreditamos no poder da tecnologia para simplificar processos, todos os dias aprendemos a importância do trabalho em equipe. Cada um de nós contribuiu com diferentes habilidades para entregar um projeto eficiente, nosso objetivo é criar soluções que realmente façam diferença no dia a dia de quem lidera e supervisiona grandes, médias e pequenas equipes
+      </p>
+      <p>
+        A equipe Sancaran é formada por: Eduardo, Gustavo, Guilherme, Dominic, Breno e Arthur; somos alunos do Instituto J&F e desenvolvemos este App com o propósito de automatizar as informações que supervisores enviam a seus líderes, trazendo organização e assim mais agilidade na leitura de dados.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="plans" id="planos">
+  <h2>Nossos Planos</h2>
+  <div class="plan-cards">
+    <div class="plan-card basic">
+      <div class="plan-header">Básico</div>
+      <div class="plan-body">
+        <ul>
+          <li>• 1 Setor ou Máquina</li>
+          <li>• Suporte Via Email</li>
+        </ul>
+        <div class="plan-price">Grátis</div>
+        <!-- CORREÇÃO: Botões dos planos também como links -->
+        <a href="#" class="btn-secondary">Assinar o Grátis</a>
+      </div>
+    </div>
+
+    <div class="plan-card professional">
+      <div class="plan-header">Profissional</div>
+      <div class="plan-body">
+        <ul>
+          <li>• 3 Setores ou Máquinas</li>
+          <li>• Suporte Via Aplicativo</li>
+        </ul>
+        <div class="plan-price">R$209,00<span>/mês</span></div>
+        <a href="#" class="btn-secondary">Assinar o Profissional</a>
+      </div>
+    </div>
+
+    <div class="plan-card corporate">
+      <div class="plan-header">Corporativo</div>
+      <div class="plan-body">
+        <ul>
+          <li>• Setores e Máquinas ilimitados</li>
+          <li>• Suporte Telefone Em Horário Comercial</li>
+        </ul>
+        <div class="plan-price">R$300,00<span>/mês</span></div>
+        <a href="#" class="btn-secondary">Assinar o Corporativo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 — Todos os direitos reservados.</p>
+</footer>
+</body>
+</html>

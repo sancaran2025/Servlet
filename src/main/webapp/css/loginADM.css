@@ -1,0 +1,320 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #051D40 0%, #2B68A6 50%, #81B5E1 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* HEADER IGUAL AO PAINEL RESTRITO */
+.painel-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #051D40;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px 40px;
+    box-shadow: 0 8px 32px rgba(5, 29, 64, 0.2);
+    border-radius: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(217, 234, 248, 0.3);
+    animation: fadeInDown 0.6s ease forwards;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-area .logo-img {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(5, 29, 64, 0.2);
+}
+
+.logo-area h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #051D40;
+    letter-spacing: 1px;
+}
+
+/* BOTÃO VOLTAR */
+.back-btn {
+    background: linear-gradient(135deg, #81B5E1, #2B68A6);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(129, 181, 225, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(129, 181, 225, 0.6);
+    background: linear-gradient(135deg, #2B68A6, #81B5E1);
+}
+
+/* CONTAINER DO LOGIN */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(5, 29, 64, 0.15);
+    overflow: hidden;
+    width: 850px;
+    border: 1px solid rgba(217, 234, 248, 0.5);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+/* LADO DO MASCOTE - SIMPLES */
+.mascote-side {
+    background: linear-gradient(180deg, #2B68A6, #81B5E1);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    min-height: 500px;
+}
+
+.mascote-img {
+    width: 280px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0; /* SEM BORDA REDONDA */
+    box-shadow: none; /* SEM SOMBRA */
+    background: transparent; /* SEM FUNDO */
+    padding: 0; /* SEM PADDING */
+    border: none; /* SEM BORDA */
+    transition: transform 0.3s ease;
+}
+
+.mascote-img:hover {
+    transform: scale(1.05);
+}
+
+/* FORMULÁRIO */
+.login-form {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 500px;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #051D40;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: 2px solid #D9EAF8;
+    font-size: 15px;
+    transition: 0.3s;
+    background: #f8fafc;
+}
+
+.login-form input:focus {
+    border-color: #2B68A6;
+    outline: none;
+    box-shadow: 0 0 12px rgba(43, 104, 166, 0.2);
+    background: white;
+}
+
+.login-form button {
+    margin-top: 20px;
+    padding: 14px;
+    background: linear-gradient(135deg, #2B68A6, #051D40);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(5, 29, 64, 0.3);
+}
+
+.login-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5, 29, 64, 0.4);
+    background: linear-gradient(135deg, #051D40, #2B68A6);
+}
+
+.erro {
+    color: #cc2b2b;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 500;
+    padding: 12px;
+    background: rgba(204, 43, 43, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #cc2b2b;
+    font-size: 14px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 850px) {
+    .login-container {
+        flex-direction: column;
+        width: 95%;
+        max-width: 500px;
+    }
+
+    .mascote-side {
+        width: 100%;
+        padding: 30px;
+        min-height: 300px;
+    }
+
+    .mascote-img {
+        width: 220px;
+        max-width: 100%;
+    }
+
+    .login-form {
+        padding: 35px;
+        width: 100%;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .back-btn {
+        order: 2;
+    }
+
+    .painel-header {
+        padding: 15px 25px;
+        margin-bottom: 30px;
+    }
+
+    .logo-area h1 {
+        font-size: 22px;
+    }
+
+    .logo-area .logo-img {
+        height: 45px;
+    }
+
+    .login-form h2 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .login-form {
+        padding: 25px;
+    }
+
+    .login-form h2 {
+        font-size: 20px;
+    }
+
+    .login-form input,
+    .login-form button {
+        padding: 12px;
+    }
+
+    .mascote-side {
+        padding: 20px;
+        min-height: 250px;
+    }
+
+    .mascote-img {
+        width: 180px;
+    }
+
+    .painel-header {
+        padding: 12px 20px;
+    }
+}
+
+/* ANIMAÇÕES */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ESTILOS PARA LIMPAR CACHE */
+body::after {
+    content: "v2.2";
+    display: none;
+}
+
+/* EFEITO DE FOCO MELHORADO */
+.login-form input:valid {
+    border-color: #81B5E1;
+}
+
+/* PLACEHOLDER ESTILIZADO */
+.login-form input::placeholder {
+    color: #8a9cb0;
+    font-weight: 400;
+}
