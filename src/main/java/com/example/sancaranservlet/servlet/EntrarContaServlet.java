@@ -18,7 +18,6 @@ public class EntrarContaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("password");
-        String remember = request.getParameter("remember");
 
         System.out.println("=== TENTATIVA DE LOGIN ===");
         System.out.println("Email: " + email);
@@ -51,15 +50,7 @@ public class EntrarContaServlet extends HttpServlet {
             session.setAttribute("usuarioNome", usuario.getNome());
             session.setAttribute("usuarioTipo", usuario.getTipo());
 
-            // Configurar cookie de "Lembrar de mim" se solicitado
-            if ("on".equals(remember)) {
-                Cookie emailCookie = new Cookie("usuarioEmail", email);
-                emailCookie.setMaxAge(30 * 24 * 60 * 60); // 30 dias
-                emailCookie.setPath("/");
-                response.addCookie(emailCookie);
-            }
-
-            // 🔥 REDIRECIONAMENTO CORRIGIDO - TODOS para painel-visualizacao.jsp
+            // Redirecionar para painel
             response.sendRedirect("painelGeral.jsp");
 
         } else {
@@ -71,24 +62,7 @@ public class EntrarContaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Verificar se há cookie de "Lembrar de mim"
-        Cookie[] cookies = request.getCookies();
-        String savedEmail = null;
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("usuarioEmail".equals(cookie.getName())) {
-                    savedEmail = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (savedEmail != null) {
-            request.setAttribute("savedEmail", savedEmail);
-        }
-
-        // 🔥 CORRIGIDO - Redirecionar para a página de login correta
+        // Redirecionar direto para a página de login
         RequestDispatcher dispatcher = request.getRequestDispatcher("EntrarConta.jsp");
         dispatcher.forward(request, response);
     }

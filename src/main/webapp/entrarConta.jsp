@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar na Conta - Sancaran</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/entrarConta.css?v=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/entrarConta.css">
 </head>
 <body>
-<!-- HEADER NO MESMO ESTILO -->
+<!-- HEADER -->
 <header class="painel-header">
     <div class="header-content">
         <div class="logo-area">
@@ -21,7 +21,7 @@
     </div>
 </header>
 
-<!-- CONTAINER PRINCIPAL COM MASCOTE -->
+<!-- CONTAINER PRINCIPAL -->
 <main class="login-container">
     <!-- LADO DO MASCOTE -->
     <div class="mascote-side">
@@ -61,23 +61,12 @@
                 <input type="password" id="password" name="password" placeholder="Senha *" required class="form-input">
             </div>
 
-            <div class="form-options">
-                <label class="checkbox-option">
-                    <input type="checkbox" id="remember" name="remember">
-                    <span class="checkbox-checkmark"></span>
-                    <span class="checkbox-label">Lembrar de mim</span>
-                </label>
-                <a href="${pageContext.request.contextPath}/esqueci-senha.jsp" class="forgot-password">
-                    Esqueci a senha
-                </a>
-            </div>
-
             <button type="submit" class="btn-primary">
                 <span class="btn-text">Entrar na Conta</span>
             </button>
 
             <div class="auth-footer">
-                <p>Não tem uma conta? <a href="${pageContext.request.contextPath}/Criarconta.jsp" class="link">Crie uma aqui</a></p>
+                <p>Não tem uma conta? <a href="${pageContext.request.contextPath}/criarConta.jsp" class="link">Crie uma aqui</a></p>
             </div>
         </form>
     </div>
@@ -104,20 +93,6 @@
         }
 
         return true;
-    });
-
-    // Feedback visual nos inputs
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.classList.add('focused');
-        });
-
-        input.addEventListener('blur', function() {
-            if (this.value === '') {
-                this.classList.remove('focused');
-            }
-        });
     });
 </script>
 </body>

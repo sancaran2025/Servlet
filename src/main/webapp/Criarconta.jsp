@@ -45,7 +45,7 @@
             <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran" class="logo-img">
             <h1>Criar Nova Conta</h1>
         </div>
-        <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">
+        <a href="${pageContext.request.contextPath}/index.html" class="back-btn">
             ← Voltar ao Site
         </a>
     </div>

@@ -2,7 +2,7 @@
 <%@ page import="com.example.sancaranservlet.model.Usuario" %>
 <%
     if (session.getAttribute("usuarioLogado") == null) {
-        response.sendRedirect("EntrarConta.jsp");
+        response.sendRedirect("entrarConta.jsp");
         return;
     }
     Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -47,7 +47,7 @@
             </div>
         </a>
 
-        <a href="painel-usuarios.jsp" class="card-item">
+        <a href="${pageContext.request.contextPath}/UsuarioVisualizacaoServlet" class="card-item">
             <img src="${pageContext.request.contextPath}/imgs/administrativo.jpg" alt="Usuários">
             <div class="card-info">
                 <h3>USUÁRIOS</h3>
