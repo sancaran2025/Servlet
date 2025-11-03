@@ -10,10 +10,12 @@ import java.util.List;
 public class ProducaoDAO {
     private Connection conn;
 
+    // já conecta ao banco ao criar o DAO
     public ProducaoDAO() {
         conn = new Conexao().conectar();
     }
 
+    // Lista todas as produções, trazendo também o nome do setor se existir
     public List<Producao> listar() {
         List<Producao> lista = new ArrayList<>();
         String sql = "SELECT p.*, s.nome AS nome_setor FROM Producao p LEFT JOIN Setor s ON p.id_setor = s.id ORDER BY p.id";
@@ -34,7 +36,7 @@ public class ProducaoDAO {
                 p.setQntProduzida(rs.getInt("qnt_produzida"));
                 p.setIdSetor(rs.getInt("id_setor"));
 
-                // Pega o nome do setor, se existir
+                // Se o nome do setor estiver disponível, usa; senão, cria uma referência genérica
                 String nomeSetor = rs.getString("nome_setor");
                 p.setNomeSetor(nomeSetor != null ? nomeSetor : "Setor " + p.getIdSetor());
 
@@ -56,6 +58,7 @@ public class ProducaoDAO {
         return lista;
     }
 
+    // Insere uma nova produção no banco
     public boolean inserir(Producao p) {
         String sql = "INSERT INTO Producao (dt_registro, qnt_produzida, id_setor) VALUES (?, ?, ?)";
 
@@ -78,6 +81,7 @@ public class ProducaoDAO {
         }
     }
 
+    // Atualiza uma produção existente
     public boolean atualizar(Producao p) {
         String sql = "UPDATE Producao SET dt_registro = ?, qnt_produzida = ?, id_setor = ? WHERE id = ?";
 
@@ -101,6 +105,7 @@ public class ProducaoDAO {
         }
     }
 
+    // Exclui uma produção pelo ID
     public boolean excluir(int id) {
         String sql = "DELETE FROM Producao WHERE id = ?";
 
@@ -121,6 +126,7 @@ public class ProducaoDAO {
         }
     }
 
+    // Busca uma produção específica pelo ID
     public Producao buscarPorId(int id) {
         String sql = "SELECT p.*, s.nome AS nome_setor FROM Producao p LEFT JOIN Setor s ON p.id_setor = s.id WHERE p.id = ?";
 

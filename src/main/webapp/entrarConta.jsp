@@ -15,7 +15,7 @@
             <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran" class="logo-img">
             <h1>Entrar na Conta</h1>
         </div>
-        <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">
+        <a href="${pageContext.request.contextPath}/index.html" class="back-btn">
             ← Voltar ao Site
         </a>
     </div>
@@ -66,7 +66,7 @@
             </button>
 
             <div class="auth-footer">
-                <p>Não tem uma conta? <a href="${pageContext.request.contextPath}/criarConta.jsp" class="link">Crie uma aqui</a></p>
+                <p>Não tem uma conta? <a href="${pageContext.request.contextPath}/CriarConta.jsp" class="link">Crie uma aqui</a></p>
             </div>
         </form>
     </div>

@@ -15,6 +15,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet responsável pelo gerenciamento das Produções.
+ * Permite listar, cadastrar, atualizar e excluir registros de produção.
+ */
 @WebServlet("/ProducaoServlet")
 public class ProducaoServlet extends HttpServlet {
 
@@ -23,11 +27,9 @@ public class ProducaoServlet extends HttpServlet {
 
     @Override
     public void init() {
+        // Inicializa os DAOs para acesso ao banco de dados
         producaoDAO = new ProducaoDAO();
         setorDAO = new SetorDAO();
-
-        System.out.println("=== DEBUG ProducaoServlet.init() ===");
-        System.out.println("DAOs inicializados");
     }
 
     @Override
@@ -36,21 +38,20 @@ public class ProducaoServlet extends HttpServlet {
 
         String acao = request.getParameter("acao");
 
-        System.out.println("=== DEBUG ProducaoServlet.doGet() ===");
-        System.out.println("Ação: " + (acao != null ? acao : "listar"));
-
         try {
-            // AGORA SÓ PRECISAMOS DA LISTAGEM - O RESTO É FEITO VIA MODAL
+            // Se nenhuma ação for especificada, ou for "listar", exibe a lista de produções
             if (acao == null || acao.isEmpty() || acao.equals("listar")) {
                 listarProducoes(request, response);
-            } else if ("excluir".equals(acao)) {
+            }
+            // Se a ação for "excluir", realiza a exclusão de um registro
+            else if ("excluir".equals(acao)) {
                 excluirProducao(request, response);
-            } else {
-                // Se tentar acessar 'novo' ou 'editar' via GET, redireciona para listagem
+            }
+            // Para qualquer outra ação via GET, retorna à listagem
+            else {
                 listarProducoes(request, response);
             }
         } catch (Exception e) {
-            System.out.println("ERRO no doGet: " + e.getMessage());
             throw new ServletException(e);
         }
     }
@@ -59,20 +60,17 @@ public class ProducaoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Captura os parâmetros do formulário
         String idStr = request.getParameter("id");
         String dtRegistro = request.getParameter("dt_registro");
         String qntStr = request.getParameter("qnt_produzida");
         String idSetorStr = request.getParameter("id_setor");
 
-        System.out.println("=== DEBUG ProducaoServlet.doPost() ===");
-        System.out.println("Dados: id=" + idStr + ", data=" + dtRegistro + ", qnt=" + qntStr + ", setor=" + idSetorStr);
-
-        // VALIDAÇÕES
+        // Valida campos obrigatórios
         if (dtRegistro == null || dtRegistro.isEmpty() ||
                 qntStr == null || qntStr.isEmpty() ||
                 idSetorStr == null || idSetorStr.isEmpty()) {
 
-            System.out.println("ERRO: Campos obrigatórios faltando");
             HttpSession session = request.getSession();
             session.setAttribute("mensagem", "Erro: Todos os campos são obrigatórios!");
             response.sendRedirect("ProducaoServlet");
@@ -89,86 +87,65 @@ public class ProducaoServlet extends HttpServlet {
 
         try {
             if (idStr == null || idStr.isEmpty()) {
-                // NOVO CADASTRO
-                System.out.println("Inserindo nova produção...");
+                // Inserção de nova produção
                 boolean sucesso = producaoDAO.inserir(producao);
-                if (sucesso) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("mensagem", "Produção cadastrada com sucesso!");
-                    System.out.println("Produção inserida com sucesso!");
-                } else {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("mensagem", "Erro ao cadastrar produção!");
-                    System.out.println("Falha ao inserir produção!");
-                }
+                HttpSession session = request.getSession();
+                session.setAttribute("mensagem", sucesso ?
+                        "Produção cadastrada com sucesso!" :
+                        "Erro ao cadastrar produção!");
             } else {
-                // EDIÇÃO
+                // Atualização de produção existente
                 int id = Integer.parseInt(idStr);
                 producao.setId(id);
-                System.out.println("Atualizando produção ID=" + id);
                 boolean sucesso = producaoDAO.atualizar(producao);
-                if (sucesso) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("mensagem", "Produção atualizada com sucesso!");
-                    System.out.println("Produção atualizada com sucesso!");
-                } else {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("mensagem", "Erro ao atualizar produção!");
-                    System.out.println("Falha ao atualizar produção!");
-                }
+                HttpSession session = request.getSession();
+                session.setAttribute("mensagem", sucesso ?
+                        "Produção atualizada com sucesso!" :
+                        "Erro ao atualizar produção!");
             }
         } catch (Exception e) {
-            System.out.println("ERRO no doPost: " + e.getMessage());
-            e.printStackTrace();
             HttpSession session = request.getSession();
             session.setAttribute("mensagem", "Erro ao salvar produção: " + e.getMessage());
         }
 
+        // Redireciona de volta para a lista de produções
         response.sendRedirect("ProducaoServlet");
     }
 
+    /**
+     * Lista todas as produções e os setores disponíveis.
+     * Prepara os dados para exibição na JSP.
+     */
     private void listarProducoes(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("=== DEBUG listarProducoes() ===");
-
         List<Producao> producoes = producaoDAO.listar();
-        List<Setor> setores = setorDAO.listarTodos(); // ← CARREGA SETORES PARA O MODAL
+        List<Setor> setores = setorDAO.listarTodos(); // Usado no modal de cadastro/edição
 
-        System.out.println("Produções retornadas do DAO: " + producoes.size());
-        System.out.println("Setores carregados: " + setores.size());
-
+        // Atribui os dados à requisição para uso na JSP
         request.setAttribute("producoes", producoes);
-        request.setAttribute("setores", setores); // ← PASSA SETORES PARA O JSP
+        request.setAttribute("setores", setores);
 
+        // Encaminha para a JSP responsável pela listagem
         RequestDispatcher dispatcher = request.getRequestDispatcher("/producao/listaProducao.jsp");
         dispatcher.forward(request, response);
-
-        System.out.println("Redirecionado para listaProducao.jsp");
     }
 
-    // MÉTODOS REMOVIDOS - AGORA SÓ PRECISAMOS DA EXCLUSÃO
-    // - mostrarFormulario() - REMOVIDO (feito via modal)
-    // - editarProducao() - REMOVIDO (feito via modal)
-
+    /**
+     * Exclui uma produção com base no ID fornecido.
+     */
     private void excluirProducao(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
-        System.out.println("=== DEBUG excluirProducao() ===");
-        System.out.println("Excluindo produção ID=" + id);
-
         boolean sucesso = producaoDAO.excluir(id);
 
         HttpSession session = request.getSession();
-        if (sucesso) {
-            session.setAttribute("mensagem", "Produção excluída com sucesso!");
-            System.out.println("Produção excluída com sucesso!");
-        } else {
-            session.setAttribute("mensagem", "Erro ao excluir produção!");
-            System.out.println("Erro ao excluir produção!");
-        }
+        session.setAttribute("mensagem", sucesso ?
+                "Produção excluída com sucesso!" :
+                "Erro ao excluir produção!");
 
+        // Redireciona de volta para a listagem
         response.sendRedirect("ProducaoServlet");
     }
 }

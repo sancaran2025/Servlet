@@ -76,6 +76,9 @@
                 <th>NOME</th>
                 <th>EMAIL</th>
                 <th>SENHA</th>
+                <th>CPF</th>
+                <th>CARGO</th>
+                <th>TELEFONE</th>
                 <th>AÇÕES</th>
             </tr>
             </thead>
@@ -84,15 +87,17 @@
                 if (adms.isEmpty()) {
             %>
             <tr>
-                <td colspan="5" class="empty">
+                <td colspan="8" class="empty">
                     <i class="fas fa-users"></i> Nenhum administrador cadastrado
                 </td>
             </tr>
             <%
             } else {
                 for (Usuario u : adms) {
-                    // Senha totalmente anonimizada com asteriscos
                     String senhaAnonimizada = "••••••••";
+                    String cpf = (u.getCpf() != null && !u.getCpf().isEmpty()) ? u.getCpf() : "---";
+                    String cargo = (u.getCargo() != null && !u.getCargo().isEmpty()) ? u.getCargo() : "---";
+                    String telefone = (u.getTelefone() != null && !u.getTelefone().isEmpty()) ? u.getTelefone() : "---";
             %>
             <tr>
                 <td><strong>#<%= u.getId() %></strong></td>
@@ -101,8 +106,19 @@
                 <td style="font-family: monospace; color: #666; letter-spacing: 2px;">
                     <%= senhaAnonimizada %>
                 </td>
+                <td><%= cpf %></td>
+                <td><%= cargo %></td>
+                <td><%= telefone %></td>
                 <td class="icons">
-                    <button onclick="editarAdm(<%= u.getId() %>, '<%= u.getNome() != null ? u.getNome().replace("'", "\\'") : "" %>', '<%= u.getEmail() != null ? u.getEmail().replace("'", "\\'") : "" %>', '<%= u.getSenha() != null ? u.getSenha().replace("'", "\\'") : "" %>')"
+                    <button onclick="editarAdm(
+                        <%= u.getId() %>,
+                            '<%= u.getNome() != null ? u.getNome().replace("'", "\\'") : "" %>',
+                            '<%= u.getEmail() != null ? u.getEmail().replace("'", "\\'") : "" %>',
+                            '<%= u.getSenha() != null ? u.getSenha().replace("'", "\\'") : "" %>',
+                            '<%= u.getCpf() != null ? u.getCpf().replace("'", "\\'") : "" %>',
+                            '<%= u.getCargo() != null ? u.getCargo().replace("'", "\\'") : "" %>',
+                            '<%= u.getTelefone() != null ? u.getTelefone().replace("'", "\\'") : "" %>'
+                            )"
                             class="action edit" title="Editar">
                         <i class="fas fa-edit"></i>
                     </button>
@@ -125,13 +141,12 @@
         </table>
     </div>
 </div>
-<!-- MODAL PARA NOVO/EDITAR ADMINISTRADOR -->
+
+<!-- MODAL NOVO/EDITAR COM TODOS OS DADOS -->
 <div id="modalAdm" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2 id="modalTitle">
-                <i class="fas fa-plus"></i> Novo Administrador
-            </h2>
+            <h2 id="modalTitle"><i class="fas fa-plus"></i> Novo Administrador</h2>
             <span class="close" onclick="fecharModal()">&times;</span>
         </div>
         <div class="modal-body">
@@ -139,35 +154,38 @@
                 <input type="hidden" id="admId" name="id" value="">
 
                 <div class="form-group">
-                    <label for="nome">
-                        <i class="fas fa-user"></i> Nome Completo:
-                    </label>
-                    <input type="text" id="nome" name="nome" required
-                           placeholder="Digite o nome completo">
+                    <label for="nome"><i class="fas fa-user"></i> Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Digite o nome completo">
                 </div>
 
                 <div class="form-group">
-                    <label for="email">
-                        <i class="fas fa-envelope"></i> E-mail:
-                    </label>
-                    <input type="email" id="email" name="email" required
-                           placeholder="exemplo@email.com">
+                    <label for="email"><i class="fas fa-envelope"></i> E-mail:</label>
+                    <input type="email" id="email" name="email" required placeholder="exemplo@email.com">
                 </div>
 
                 <div class="form-group">
-                    <label for="senha">
-                        <i class="fas fa-lock"></i> Senha:
-                    </label>
+                    <label for="senha"><i class="fas fa-lock"></i> Senha:</label>
                     <div style="position: relative;">
-                        <input type="password" id="senha" name="senha" required
-                               placeholder="Digite a senha" style="padding-right: 45px;">
-                        <button type="button" id="toggleSenha"
-                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-                                       background: none; border: none; cursor: pointer; color: #666;"
-                                onclick="toggleSenhaVisibility()">
+                        <input type="password" id="senha" name="senha" required placeholder="Digite a senha" style="padding-right: 45px;">
+                        <button type="button" id="toggleSenha" onclick="toggleSenhaVisibility()">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf"><i class="fas fa-id-card"></i> CPF:</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="Digite o CPF">
+                </div>
+
+                <div class="form-group">
+                    <label for="cargo"><i class="fas fa-briefcase"></i> Cargo:</label>
+                    <input type="text" id="cargo" name="cargo" placeholder="Digite o cargo">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone"><i class="fas fa-phone"></i> Telefone:</label>
+                    <input type="text" id="telefone" name="telefone" placeholder="Digite o telefone">
                 </div>
 
                 <div class="form-actions">
@@ -184,110 +202,52 @@
 </div>
 
 <script>
-    // FUNÇÃO PARA MOSTRAR/OCULTAR SENHA
     function toggleSenhaVisibility() {
         const senhaInput = document.getElementById('senha');
         const toggleButton = document.getElementById('toggleSenha');
         const icon = toggleButton.querySelector('i');
-
         if (senhaInput.type === 'password') {
             senhaInput.type = 'text';
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
-            toggleButton.style.color = '#2B68A6';
         } else {
             senhaInput.type = 'password';
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
-            toggleButton.style.color = '#666';
         }
     }
 
-    // FUNÇÕES DO MODAL
     function abrirModal() {
         document.getElementById('modalAdm').style.display = 'block';
         document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus"></i> Novo Administrador';
         document.getElementById('formAdm').reset();
         document.getElementById('admId').value = '';
-
-        // Resetar o ícone do olho
-        const toggleButton = document.getElementById('toggleSenha');
-        const icon = toggleButton.querySelector('i');
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-        toggleButton.style.color = '#666';
-
-        // Focar no primeiro campo
-        setTimeout(() => {
-            document.getElementById('nome').focus();
-        }, 300);
     }
 
     function fecharModal() {
         document.getElementById('modalAdm').style.display = 'none';
     }
 
-    function editarAdm(id, nome, email, senha) {
+    function editarAdm(id, nome, email, senha, cpf, cargo, telefone) {
         document.getElementById('modalAdm').style.display = 'block';
         document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Administrador';
         document.getElementById('admId').value = id;
         document.getElementById('nome').value = nome;
         document.getElementById('email').value = email;
-        document.getElementById('senha').value = senha; // Preenche com a senha atual
-
-        // Resetar o ícone do olho
-        const toggleButton = document.getElementById('toggleSenha');
-        const icon = toggleButton.querySelector('i');
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-        toggleButton.style.color = '#666';
-
-        // Focar no primeiro campo
-        setTimeout(() => {
-            document.getElementById('nome').focus();
-        }, 300);
+        document.getElementById('senha').value = senha;
+        document.getElementById('cpf').value = cpf;
+        document.getElementById('cargo').value = cargo;
+        document.getElementById('telefone').value = telefone;
     }
 
-    // Fechar modal clicando fora
     window.onclick = function(event) {
         var modal = document.getElementById('modalAdm');
-        if (event.target == modal) {
-            fecharModal();
-        }
+        if (event.target == modal) fecharModal();
     }
 
-    // Fechar modal com ESC
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            fecharModal();
-        }
-    });
-
-    // Validação do formulário
-    document.getElementById('formAdm').addEventListener('submit', function(e) {
-        const nome = document.getElementById('nome').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('senha').value;
-
-        if (!nome) {
-            e.preventDefault();
-            alert('Por favor, insira o nome do administrador.');
-            document.getElementById('nome').focus();
-            return;
-        }
-
-        if (!email) {
-            e.preventDefault();
-            alert('Por favor, insira o e-mail do administrador.');
-            document.getElementById('email').focus();
-            return;
-        }
-
-        if (!senha) {
-            e.preventDefault();
-            alert('Por favor, insira a senha do administrador.');
-            document.getElementById('senha').focus();
-            return;
-        }
+        if (event.key === 'Escape') fecharModal();
     });
 </script>
+</body>
+</html>

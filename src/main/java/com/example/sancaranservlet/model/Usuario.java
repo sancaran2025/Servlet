@@ -1,6 +1,7 @@
 package com.example.sancaranservlet.model;
 
 public class Usuario {
+
     private int id;
     private String nome;
     private String cpf;
@@ -10,9 +11,8 @@ public class Usuario {
     private String cargo;
     private String senha;
     private String setor;
-    private String telefone; // ← ADICIONE ESTE CAMPO
+    private String telefone;
 
-    // Construtores
     public Usuario() {}
 
     public Usuario(String nome, String cpf, String cep, char tipo, String email, String cargo, String senha, String setor, String telefone) {
@@ -27,39 +27,86 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getCpf() { return cpf; }
-    public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getNome() {
+        return nome;
+    }
 
-    public String getCep() { return cep; }
-    public void setCep(String cep) { this.cep = cep; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public char getTipo() { return tipo; }
-    public void setTipo(char tipo) { this.tipo = tipo; }
+    public String getCpf() {
+        return cpf;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-    public String getCargo() { return cargo; }
-    public void setCargo(String cargo) { this.cargo = cargo; }
+    public String getCep() {
+        return cep;
+    }
 
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
 
-    public String getSetor() { return setor; }
-    public void setSetor(String setor) { this.setor = setor; }
+    public char getTipo() {
+        return tipo;
+    }
 
-    // ← ADICIONE ESTES DOIS MÉTODOS
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public void setTipo(char tipo) {
+        this.tipo = tipo;
+    }
 
-    // toString para debug
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

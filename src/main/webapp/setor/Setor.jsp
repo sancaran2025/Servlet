@@ -24,7 +24,8 @@
 
 <div class="sidebar">
     <div class="logo">
-        <i class="fas fa-shield-alt"></i> SANCARAN
+        <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran" class="logo-img">
+        <span class="logo-text">SANCARAN</span>
     </div>
     <a href="${pageContext.request.contextPath}/AreaRestrita.jsp" class="btn">
         <i class="fas fa-tachometer-alt"></i> PAINEL GERAL

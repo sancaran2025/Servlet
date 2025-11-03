@@ -23,7 +23,7 @@
         </div>
         <div class="user-area">
             <span>👋 Olá, <%= usuario.getNome() %></span>
-            <a href="logout" class="logout-btn">🚪 Sair</a>
+            <a href="index.html" class="logout-btn">🚪 Sair</a>
         </div>
     </div>
 </header>
@@ -39,7 +39,7 @@
 
     <div class="cards-grid">
         <!-- USANDO AS IMAGENS QUE VOCÊ JÁ TEM -->
-        <a href="meta/ListaMetaVisualizacao.jsp" class="card-item">
+        <a href="${pageContext.request.contextPath}/metas-visualizacao" class="card-item">
             <img src="${pageContext.request.contextPath}/imgs/meta.jpg" alt="Metas">
             <div class="card-info">
                 <h3>METAS</h3>
@@ -55,7 +55,7 @@
             </div>
         </a>
 
-        <a href="ProducaoVisualizacaoServlet" class="card-item">
+        <a href="${pageContext.request.contextPath}/VisualizacaoProducaoServlet" class="card-item">
             <img src="${pageContext.request.contextPath}/imgs/producao.jpg" alt="Produção">
             <div class="card-info">
                 <h3>PRODUÇÃO</h3>
@@ -63,7 +63,7 @@
             </div>
         </a>
 
-        <a href="setor/SetorVisualizacao.jsp" class="card-item">
+        <a href="${pageContext.request.contextPath}/VisualizacaoSetorServlet" class="card-item">
             <img src="${pageContext.request.contextPath}/imgs/setor.jpg" alt="Setor">
             <div class="card-info">
                 <h3>SETOR</h3>

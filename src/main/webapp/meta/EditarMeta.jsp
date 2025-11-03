@@ -1,4 +1,4 @@
-<%@ page import="com.example.sancaranservlet.dao.MetaDAO, com.example.sancaranservlet.model.Meta" %>
+%@ page import="com.example.sancaranservlet.dao.MetaDAO, com.example.sancaranservlet.model.Meta" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%

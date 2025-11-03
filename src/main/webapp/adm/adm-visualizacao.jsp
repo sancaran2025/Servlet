@@ -28,22 +28,22 @@
         <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran" class="logo-img">
         <span class="logo-text">SANCARAN</span>
     </div>
-    <a href="${pageContext.request.contextPath}/dashboard.jsp" class="btn">
+    <a href="${pageContext.request.contextPath}/painelGeral.jsp" class="btn">
         <i class="fas fa-tachometer-alt"></i> PAINEL GERAL
     </a>
-    <a href="${pageContext.request.contextPath}/producao-visualizacao.jsp" class="btn">
+    <a href="${pageContext.request.contextPath}/VisualizacaoProducaoServlet" class="btn">
         <i class="fas fa-chart-line"></i> PRODUÇÃO
     </a>
-    <a href="${pageContext.request.contextPath}/metas-visualizacao.jsp" class="btn">
+    <a href="${pageContext.request.contextPath}/metas-visualizacao" class="btn active">
         <i class="fas fa-bullseye"></i> METAS
     </a>
-    <a href="${pageContext.request.contextPath}/setores-visualizacao.jsp" class="btn">
+    <a href="${pageContext.request.contextPath}/VisualizacaoSetorServlet" class="btn">
         <i class="fas fa-building"></i> SETOR
     </a>
-    <a href="${pageContext.request.contextPath}/UsuarioVisualizacaoServlet" class="btn active">
-        <i class="fas fa-users"></i> USUÁRIOS
+    <a href="${pageContext.request.contextPath}/UsuarioVisualizacaoServlet" class="btn">
+        <i class="fas fa-users-cog"></i> ADMIN
     </a>
-    <a href="${pageContext.request.contextPath}/sair.jsp" class="logout">
+    <a href="${pageContext.request.contextPath}/index.html" class="logout">
         <i class="fas fa-sign-out-alt"></i> Sair
     </a>
 </div>

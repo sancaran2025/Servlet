@@ -13,37 +13,41 @@ import java.util.List;
 @WebServlet("/MetaServlet")
 public class MetaServlet extends HttpServlet {
 
+    // Instância do DAO para manipular metas no banco
     private final MetaDAO metaDAO = new MetaDAO();
 
+    // Método que responde a requisições GET
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Recupera sessão e verifica se o usuário está logado
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        if (usuario == null) {
+        if (usuario == null) { // Se não houver usuário logado, redireciona para login
             response.sendRedirect("LoginRestrito.jsp");
             return;
         }
 
-        String acao = request.getParameter("acao");
+        String acao = request.getParameter("acao"); // Ação enviada via parâmetro
 
+        // Ação padrão: listar todas as metas
         if (acao == null || acao.isEmpty() || acao.equals("listar")) {
             List<Meta> metas = metaDAO.listarTodas();
             request.setAttribute("metas", metas);
-            // ATENÇÃO: Você precisa criar este arquivo JSP
-            RequestDispatcher rd = request.getRequestDispatcher("meta/ListaMeta.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("meta/ListaMeta.jsp"); // JSP de listagem
             rd.forward(request, response);
             return;
         }
 
+        // Exibir formulário de nova meta
         if (acao.equals("novo")) {
-            // ATENÇÃO: Você precisa criar este arquivo JSP
-            RequestDispatcher rd = request.getRequestDispatcher("meta/EditarMeta.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("meta/EditarMeta.jsp"); // JSP para inserir/editar
             rd.forward(request, response);
             return;
         }
 
+        // Editar meta existente
         if (acao.equals("editar")) {
             String idStr = request.getParameter("id");
             if (idStr != null && !idStr.isEmpty()) {
@@ -52,8 +56,7 @@ public class MetaServlet extends HttpServlet {
                     Meta meta = metaDAO.buscarPorId(id);
                     if (meta != null) {
                         request.setAttribute("meta", meta);
-                        // ATENÇÃO: Você precisa criar este arquivo JSP
-                        RequestDispatcher rd = request.getRequestDispatcher("meta/EditarMeta.jsp");
+                        RequestDispatcher rd = request.getRequestDispatcher("meta/EditarMeta.jsp"); // Preenche formulário com dados
                         rd.forward(request, response);
                         return;
                     }
@@ -61,29 +64,31 @@ public class MetaServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-            response.sendRedirect("MetaServlet?erro=id_invalido");
+            response.sendRedirect("MetaServlet?erro=id_invalido"); // Redireciona se ID inválido
             return;
         }
 
+        // Redireciona para lista de metas caso ação não seja reconhecida
         response.sendRedirect("MetaServlet");
     }
 
+    // Método que responde a requisições POST (criar, atualizar ou excluir)
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); // Garante encoding correto
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        if (usuario == null) {
+        if (usuario == null) { // Bloqueia ação se não estiver logado
             response.sendRedirect("LoginRestrito.jsp");
             return;
         }
 
-        String acao = request.getParameter("acao");
+        String acao = request.getParameter("acao"); // Ação enviada via formulário
         String mensagem = "";
 
-        if ("excluir".equals(acao)) {
+        if ("excluir".equals(acao)) { // Excluir meta
             String idStr = request.getParameter("id");
             if (idStr != null && !idStr.isEmpty()) {
                 try {
@@ -98,7 +103,7 @@ public class MetaServlet extends HttpServlet {
                 }
             }
         } else {
-            // salvar (novo ou atualizar)
+            // Inserir nova meta ou atualizar existente
             String idStr = request.getParameter("id");
             String descricao = request.getParameter("descricao");
             String observacoes = request.getParameter("observacoes");
@@ -110,7 +115,7 @@ public class MetaServlet extends HttpServlet {
             Meta meta = new Meta();
             meta.setDescricao(descricao);
             meta.setObservacoes(observacoes);
-            meta.setStatus(status != null ? status.charAt(0) : 'P');
+            meta.setStatus(status != null ? status.charAt(0) : 'P'); // 'P' = padrão/pendente
 
             try {
                 meta.setDataInicio(Date.valueOf(dataInicio));
@@ -121,7 +126,7 @@ public class MetaServlet extends HttpServlet {
             }
 
             if (idStr == null || idStr.isEmpty()) {
-                // novo
+                // Nova meta
                 if (metaDAO.inserir(meta)) {
                     mensagem = "Meta cadastrada com sucesso!";
                 } else {
@@ -129,7 +134,7 @@ public class MetaServlet extends HttpServlet {
                 }
             } else {
                 try {
-                    // atualizar
+                    // Atualizar meta existente
                     meta.setId(Integer.parseInt(idStr));
                     if (metaDAO.atualizar(meta)) {
                         mensagem = "Meta atualizada com sucesso!";
@@ -142,7 +147,8 @@ public class MetaServlet extends HttpServlet {
             }
         }
 
+        // Salva mensagem na sessão para exibição na página
         session.setAttribute("mensagem", mensagem);
-        response.sendRedirect("MetaServlet");
+        response.sendRedirect("MetaServlet"); // Redireciona para lista de metas
     }
 }

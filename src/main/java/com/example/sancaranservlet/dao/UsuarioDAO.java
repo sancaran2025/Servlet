@@ -14,6 +14,7 @@ public class UsuarioDAO {
         this.conexao = new Conexao();
     }
 
+    // Lista todos os usuários
     public List<Usuario> listarTodos() {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT u.*, f.fone as telefone FROM usuario u LEFT JOIN fone f ON u.id = f.id_usuario ORDER BY u.id";
@@ -34,7 +35,7 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    // MÉTODO SIMPLES PARA INSERIR (sem telefone - para compatibilidade)
+    // Insere um usuário sem telefone
     public boolean inserir(Usuario usuario) {
         String sql = "INSERT INTO usuario (nome, cpf, cep, tipo, email, cargo, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -57,13 +58,13 @@ public class UsuarioDAO {
         }
     }
 
+    // Insere usuário e telefone em transação
     public boolean inserirUsuarioComTelefone(Usuario usuario, String telefone) {
         Connection conn = null;
         try {
             conn = conexao.conectar();
             conn.setAutoCommit(false);
 
-            // 1. INSERIR USUÁRIO
             String sqlUsuario = "INSERT INTO usuario (nome, cpf, cep, tipo, email, cargo, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmtUsuario = conn.prepareStatement(sqlUsuario, Statement.RETURN_GENERATED_KEYS);
 
@@ -76,13 +77,11 @@ public class UsuarioDAO {
             stmtUsuario.setString(7, usuario.getSenha());
 
             int affectedRows = stmtUsuario.executeUpdate();
-
             if (affectedRows == 0) {
                 conn.rollback();
                 return false;
             }
 
-            // 2. OBTER ID DO USUÁRIO CRIADO
             int idUsuario;
             try (ResultSet generatedKeys = stmtUsuario.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -93,7 +92,6 @@ public class UsuarioDAO {
                 }
             }
 
-            // 3. INSERIR TELEFONE
             if (telefone != null && !telefone.trim().isEmpty()) {
                 String sqlFone = "INSERT INTO fone (fone, id_usuario) VALUES (?, ?)";
                 PreparedStatement stmtFone = conn.prepareStatement(sqlFone);
@@ -118,6 +116,7 @@ public class UsuarioDAO {
         }
     }
 
+    // Atualiza dados do usuário
     public boolean atualizar(Usuario usuario) {
         String sql = "UPDATE usuario SET nome = ?, cpf = ?, cep = ?, email = ?, cargo = ?, tipo = ? WHERE id = ?";
 
@@ -140,21 +139,19 @@ public class UsuarioDAO {
         }
     }
 
-    // MÉTODO PARA ATUALIZAR TELEFONE (QUE ESTAVA FALTANDO)
+    // Atualiza ou insere telefone de usuário
     public boolean atualizarTelefone(int idUsuario, String novoTelefone) {
         Connection conn = null;
         try {
             conn = conexao.conectar();
             conn.setAutoCommit(false);
 
-            // Primeiro verifica se já existe um telefone para este usuário
             String sqlSelect = "SELECT id FROM fone WHERE id_usuario = ?";
             PreparedStatement stmtSelect = conn.prepareStatement(sqlSelect);
             stmtSelect.setInt(1, idUsuario);
             ResultSet rs = stmtSelect.executeQuery();
 
             if (rs.next()) {
-                // Já existe telefone - ATUALIZA
                 int idFone = rs.getInt("id");
                 String sqlUpdate = "UPDATE fone SET fone = ? WHERE id = ?";
                 PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate);
@@ -162,7 +159,6 @@ public class UsuarioDAO {
                 stmtUpdate.setInt(2, idFone);
                 stmtUpdate.executeUpdate();
             } else {
-                // Não existe telefone - INSERE
                 String sqlInsert = "INSERT INTO fone (fone, id_usuario) VALUES (?, ?)";
                 PreparedStatement stmtInsert = conn.prepareStatement(sqlInsert);
                 stmtInsert.setString(1, novoTelefone);
@@ -186,8 +182,8 @@ public class UsuarioDAO {
         }
     }
 
+    // Exclui usuário (cascade cuida do telefone)
     public boolean excluir(int id) {
-        // Por causa do ON DELETE CASCADE na tabela fone, podemos deletar apenas o usuário
         String sql = "DELETE FROM usuario WHERE id = ?";
 
         try (Connection conn = conexao.conectar();
@@ -202,6 +198,7 @@ public class UsuarioDAO {
         }
     }
 
+    // Busca usuário por ID
     public Usuario buscarPorId(int id) {
         String sql = "SELECT u.*, f.fone as telefone FROM usuario u LEFT JOIN fone f ON u.id = f.id_usuario WHERE u.id = ?";
         Usuario usuario = null;
@@ -223,6 +220,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
+    // Valida login por email e senha
     public Usuario validarLogin(String email, String senha) {
         String sql = "SELECT u.*, f.fone as telefone FROM usuario u LEFT JOIN fone f ON u.id = f.id_usuario WHERE u.email = ? AND u.senha = ?";
         Usuario usuario = null;
@@ -232,7 +230,6 @@ public class UsuarioDAO {
 
             stmt.setString(1, email);
             stmt.setString(2, senha);
-
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -246,7 +243,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    // VERIFICAR SE USUÁRIO JÁ EXISTE (CPF ou EMAIL)
+    // Verifica existência por CPF ou Email
     public boolean usuarioExiste(String cpf, String email) {
         String sql = "SELECT id FROM usuario WHERE cpf = ? OR email = ?";
 
@@ -265,6 +262,7 @@ public class UsuarioDAO {
         }
     }
 
+    // Busca usuário pelo email
     public Usuario buscarPorEmail(String email) {
         String sql = "SELECT u.*, f.fone as telefone FROM usuario u LEFT JOIN fone f ON u.id = f.id_usuario WHERE u.email = ?";
         Usuario usuario = null;
@@ -286,7 +284,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    // MÉTODO AUXILIAR PARA EXTRAIR DADOS DO RESULTSET
+    // Extrai dados do ResultSet para objeto Usuario
     private Usuario extrairUsuarioResultSet(ResultSet rs) throws SQLException {
         Usuario usuario = new Usuario();
         usuario.setId(rs.getInt("id"));

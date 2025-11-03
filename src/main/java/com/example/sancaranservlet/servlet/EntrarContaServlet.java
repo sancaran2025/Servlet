@@ -12,61 +12,55 @@ import java.nio.charset.StandardCharsets;
 @WebServlet(name = "EntrarContaServlet", value = "/entrar-conta")
 public class EntrarContaServlet extends HttpServlet {
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private UsuarioDAO usuarioDAO = new UsuarioDAO(); // DAO para manipulação de usuários
 
+    // POST: recebe os dados do formulário de login
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("password");
 
-        System.out.println("=== TENTATIVA DE LOGIN ===");
-        System.out.println("Email: " + email);
-        System.out.println("Senha: " + (senha != null ? "***" : "null"));
-
-        // Validações básicas
+        // Valida campos obrigatórios
         if (email == null || email.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
             response.sendRedirect("EntrarConta.jsp?error=" +
                     URLEncoder.encode("Email e senha são obrigatórios", StandardCharsets.UTF_8));
             return;
         }
 
-        // Validar formato do email
+        // Valida formato do email
         if (!validarEmail(email)) {
             response.sendRedirect("EntrarConta.jsp?error=" +
                     URLEncoder.encode("Formato de email inválido", StandardCharsets.UTF_8));
             return;
         }
 
-        // Buscar usuário no banco
+        // Verifica login no banco
         Usuario usuario = usuarioDAO.validarLogin(email, senha);
 
         if (usuario != null) {
-            System.out.println("✅ LOGIN BEM-SUCEDIDO: " + usuario.getNome());
-
-            // Criar sessão
+            // Login correto: cria sessão e redireciona para painel
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
             session.setAttribute("usuarioLogado", true);
             session.setAttribute("usuarioNome", usuario.getNome());
             session.setAttribute("usuarioTipo", usuario.getTipo());
-
-            // Redirecionar para painel
             response.sendRedirect("painelGeral.jsp");
 
         } else {
-            System.out.println("❌ LOGIN FALHOU para: " + email);
+            // Login incorreto: volta para login com mensagem
             response.sendRedirect("EntrarConta.jsp?error=" +
                     URLEncoder.encode("Email ou senha incorretos", StandardCharsets.UTF_8));
         }
     }
 
+    // GET: apenas encaminha para a página de login
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Redirecionar direto para a página de login
         RequestDispatcher dispatcher = request.getRequestDispatcher("EntrarConta.jsp");
         dispatcher.forward(request, response);
     }
 
+    // Validação simples de email usando regex
     private boolean validarEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         return email.matches(regex);

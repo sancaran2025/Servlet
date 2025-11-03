@@ -62,7 +62,8 @@
     <div class="form-side">
         <!-- Mensagens -->
         <%
-            String error = request.getParameter("error");
+            // CORREÇÃO: Usar getAttribute() em vez de getParameter()
+            String error = (String) request.getAttribute("error");
             String success = request.getParameter("success");
 
             if (error != null) {
@@ -167,7 +168,7 @@
 
             <!-- Link para login -->
             <div class="auth-footer">
-                <p>Já tem uma conta? <a href="${pageContext.request.contextPath}/EntrarConta.jsp" class="link">Entre aqui</a></p>
+                <p>Já tem uma conta? <a href="${pageContext.request.contextPath}/entrarConta.jsp" class="link">Entre aqui</a></p>
             </div>
         </form>
     </div>
