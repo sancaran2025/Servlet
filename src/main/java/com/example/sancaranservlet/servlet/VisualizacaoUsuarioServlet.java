@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Servlet responsável pela visualização de usuários cadastrados.
- * Recupera todos os usuários do sistema e encaminha para o JSP de administração.
+ * Recupera todos os usuários do sistema e encaminha para o JSP de adm.
  */
 @WebServlet("/UsuarioVisualizacaoServlet")
 public class VisualizacaoUsuarioServlet extends HttpServlet {

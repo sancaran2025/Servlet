@@ -34,13 +34,13 @@
     <a href="${pageContext.request.contextPath}/VisualizacaoProducaoServlet" class="btn">
         <i class="fas fa-chart-line"></i> PRODUÇÃO
     </a>
-    <a href="${pageContext.request.contextPath}/metas-visualizacao" class="btn active">
+    <a href="${pageContext.request.contextPath}/metas-visualizacao" class="btn">
         <i class="fas fa-bullseye"></i> METAS
     </a>
     <a href="${pageContext.request.contextPath}/VisualizacaoSetorServlet" class="btn">
         <i class="fas fa-building"></i> SETOR
     </a>
-    <a href="${pageContext.request.contextPath}/UsuarioVisualizacaoServlet" class="btn">
+    <a href="${pageContext.request.contextPath}/UsuarioVisualizacaoServlet" class="btn active">
         <i class="fas fa-users-cog"></i> ADMIN
     </a>
     <a href="${pageContext.request.contextPath}/index.html" class="logout">

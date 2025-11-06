@@ -23,9 +23,10 @@
 <body>
 
 <div class="sidebar">
-    <div class="logo">
-        <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran" class="logo-img">
-        <span class="logo-text">SANCARAN</span>
+    <div class="logo" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 0 25px; margin-bottom: 40px;">
+        <img src="${pageContext.request.contextPath}/imgs/logo.png" alt="Logo Sancaran"
+             class="logo-img" style="height: 40px; width: auto; object-fit: contain; border-radius: 8px;">
+        <span class="logo-text" style="font-size: 24px; font-weight: 700; color: #051D40;">SANCARAN</span>
     </div>
     <a href="${pageContext.request.contextPath}/AreaRestrita.jsp" class="btn">
         <i class="fas fa-tachometer-alt"></i> PAINEL GERAL
@@ -47,6 +48,7 @@
     </a>
 </div>
 
+<!-- O RESTANTE DO SEU CÓDIGO PERMANECE IGUAL -->
 <div class="content">
     <div class="container">
         <h1 class="title">

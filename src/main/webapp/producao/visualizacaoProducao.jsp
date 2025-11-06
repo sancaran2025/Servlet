@@ -26,10 +26,10 @@
     <a href="${pageContext.request.contextPath}/painelGeral.jsp" class="btn">
         <i class="fas fa-tachometer-alt"></i> PAINEL GERAL
     </a>
-    <a href="${pageContext.request.contextPath}/VisualizacaoProducaoServlet" class="btn">
+    <a href="${pageContext.request.contextPath}/VisualizacaoProducaoServlet" class="btn active">
         <i class="fas fa-chart-line"></i> PRODUÇÃO
     </a>
-    <a href="${pageContext.request.contextPath}/metas-visualizacao" class="btn active">
+    <a href="${pageContext.request.contextPath}/metas-visualizacao" class="btn">
         <i class="fas fa-bullseye"></i> METAS
     </a>
     <a href="${pageContext.request.contextPath}/VisualizacaoSetorServlet" class="btn">

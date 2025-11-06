@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Servlet responsável pela visualização de metas.
  * Permite listar todas as metas ou aplicar filtros por status e período.
- * Também calcula estatísticas básicas de quantidade de metas por status.
+ * calcula estatísticas básicas de quantidade de metas por status.
  */
 @WebServlet("/metas-visualizacao")
 public class VisualizacaoMetaServlet extends HttpServlet {
